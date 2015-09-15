@@ -1,0 +1,102 @@
+@import "../../node_modules/bootstrap/less/bootstrap.less";
+@import "../../node_modules/flat-ui/less/flat-ui.less";
+@import (less) "../../node_modules/animate.css/animate.css";
+@brand-primary:         @peter-river;
+@brand-secondary:       @belize-hole;
+@brand-success:         @emerald;
+@brand-warning:         @sun-flower;
+@brand-danger:          @alizarin;
+@brand-info:            @wet-asphalt;
+@border-radius-base: 0px;
+
+body {
+  margin: 0;
+}
+
+@top-height: 800px;
+
+// .container, .container-fluid {
+  // background-color: @body-bg;
+  // background-image: url("../images/bg2.jpeg");
+// }
+
+.after-parallax, p {
+  position: relative;
+  // padding: 20px 20px;
+  z-index: 3;
+  background: @body-bg;
+}
+
+.bg1 {
+    background-image: url("../images/bg1.jpeg");
+}
+.bg2 {
+    background-image: url("../images/bg2.jpeg");
+}
+.bg3 {
+    background-image: url("../images/bg3.jpeg");
+}
+.bg4 {
+    background-image: url("../images/bg4.jpeg");
+}
+.bg5 {
+    background-image: url("../images/bg5.jpeg");
+}
+.bg6 {
+    background-image: url("../images/bg6.jpeg");
+}
+.network-image {
+  background-image: url("../images/network.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  z-index: 0;
+  height: 400px;
+  margin: 0 0 -10% 0;
+}
+.top {
+
+  & {
+    // background-image: url("../images/bg2.jpeg");
+    background-size: 100% auto;
+    background-repeat: no-repeat;;
+    width: 100%;
+    z-index: 1;
+    height: @top-height;
+    color: white;
+    // margin-bottom: 0;
+    margin: 0 0 -10% 0;
+    max-width: 100%;
+
+    @media (max-width: @screen-xs-max) {
+      height: 200px;
+    }
+
+    @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+      height: 400px;
+    }
+
+  }
+
+  h1 {
+    margin: 0;
+    position: relative;
+    font-size: 80px;
+    bottom: -1*((@top-height/2));
+     text-shadow: 0px 0px 6px @gray ;
+
+
+    @media screen and (max-width: @screen-xs-max) {
+      font-size: @font-size-base*1.5;
+      top: 100px;
+    }
+    @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+      top: 100px;
+    }
+
+  }
+}
+
+footer {
+  margin-top: 1em;
+  padding: 3em 0;
+}

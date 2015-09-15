@@ -1,0 +1,21 @@
+doctype html
+html(lang='en',ng-app="mikrotikMangler")
+  head
+    title= title
+    meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
+    link(rel='stylesheet', href='/css/font-awesome.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src="/socket.io/socket.io.js")
+    script(src="/js/app.js",type='text/javascript')
+    base(href="/")
+  body
+    div(ng-view)
+    block content
+    footer
+      div.container.text-center
+        small
+          | Made with 
+          i.fa.fa-heart.animated.bounce.infinite
+          | &nbsp; by 
+          a(href="http://michalmazurek.eu")
+            | Michał Mazurek

@@ -1,0 +1,2 @@
+
+indexCtrl = require "./IndexController"
