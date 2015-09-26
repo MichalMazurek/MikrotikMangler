@@ -26,7 +26,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-var users = require('./routes/users');
 var apiv1 = require("./routes/apiv1")
 app.use('/', routes);
 app.use("/api/v1/", apiv1);
