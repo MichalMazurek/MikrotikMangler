@@ -60,6 +60,7 @@ if (process.env.NODE_ENV === 'dev') {
       message: err.message,
       error: err
     });
+    throw err;
   });
 }
 

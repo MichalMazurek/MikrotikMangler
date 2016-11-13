@@ -1,8 +1,7 @@
-
-
+_ = require('lodash')
 app = angular.module("mikrotikMangler")
 
-app.controller "IndexController", ($scope, parallaxHelper, $http, monitoringSocket) ->
+app.controller "IndexController", ($scope, parallaxHelper, $http, monitoringSocket, $q) ->
   $scope.random_bg = "bg" + (Math.floor(Math.random() * 6) + 1)
   $scope.background = parallaxHelper.createAnimator(-0.3, 150, -600);
   $scope.loading = yes
@@ -44,17 +43,28 @@ app.controller "IndexController", ($scope, parallaxHelper, $http, monitoringSock
         promise = promise.then () ->
           $scope.refresh_gw(gw)
 
+  $http.get("/api/v1/global_routing_mark").then (response) ->
+    $scope.global_routing_mark = response.data
+
   $scope.refresh_routing_mark = (subnet) ->
-    $http.get("/api/v1/subnet/"+subnet.replace("/", "-")).then (response) ->
+    $http.get("/api/v1/subnet/"+subnet.subnet.replace("/", "-")).then (response) ->
       data = response.data
       $scope.routing_marks[data.subnet] = data.routing_mark
       $scope.routing_values.push(data.routing_mark) if $scope.routing_values.indexOf(data.routing_mark) is -1
 
   $scope.change_routing_mark = (subnet, new_value) ->
 
-    $scope.routing_marks[subnet] = undefined
-    $http.post("/api/v1/subnet/"+subnet.replace("/", '-'), {'routing_mark': new_value})
-
+    if subnet == 'global'
+      $scope.global_routing_mark = undefined
+      _.reduce(_.filter($scope.subnets, (s) -> s.global), (promise, subnet) ->
+        promise.then (response) ->
+          $http.post("/api/v1/subnet/"+subnet.subnet.replace("/", '-'), {'routing_mark': new_value})
+      , $http.post("/api/v1/global_routing_mark", {'routing_mark': new_value}))
+      .then () ->
+        $scope.global_routing_mark = new_value
+    else
+      $scope.routing_marks[subnet] = undefined
+      $http.post("/api/v1/subnet/"+subnet.replace("/", '-'), {'routing_mark': new_value})
 
 
   $http.get("/api/v1/subnet").then (response) ->

@@ -6,7 +6,7 @@ var argv = require("yargs").argv
 var fs = require("fs")
 var Client = require("ssh2").Client
 var _ = require("lodash")
-
+var YAML = require('yamljs');
 var router = app
 redis_client = redis.createClient()
 
@@ -32,11 +32,37 @@ router.get("/routing_marks", function(req, res) {
 
 router.get("/subnet", function(req, res) {
   redis_client.smembers("marked_subnets", function(err, reply) {
-    var subnets = _.sortBy(reply, function(val) {
+    var redisSubnets = _.sortBy(reply, function(val) {
       return parseInt(_.words(val, /\d+/g)[2]);
     })
-    res.json(subnets)
+    // attach config to subnets
+    YAML.load(argv.subnets, function(subnetsConfig) {
+      var subnets = _.map(redisSubnets, function(subnet) {
+        var subnetConfig = subnetsConfig[subnet]
+        subnetConfig = subnetConfig !== undefined ? subnetConfig : {};
+        console.log(subnetConfig)
+        return {
+          subnet: subnet,
+          alias: subnetConfig.alias !== undefined ? subnetConfig.alias : subnet,
+          global: subnetConfig.global !== undefined ? subnetConfig.global : false,
+          hidden: subnetConfig.hidden !== undefined ? subnetConfig.hidden : false
+        }
+      });
+      res.json(subnets);
+    });
+
   });
+});
+
+router.get("/global_routing_mark", function(req, res) {
+  redis_client.get("global_routing_mark", function(err, reply) {
+    res.json(reply);
+  });
+});
+
+router.post("/global_routing_mark", function(req, res) {
+  redis_client.set('global_routing_mark', req.body.routing_mark);
+  res.json();
 });
 
 router.get("/subnet/:subnet", function(req, res) {
@@ -45,7 +71,7 @@ router.get("/subnet/:subnet", function(req, res) {
     subnet_obj = JSON.parse(reply)
     res.json({"subnet": subnet_obj.src_address, "routing_mark": subnet_obj.new_routing_mark})
   });
-})
+});
 
 
 var change_routing_mark = function(subnet, routing_mark, cb) {

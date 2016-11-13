@@ -1,6 +1,50 @@
 <div class="top" ng-class="random_bg" du-parallax y="background">
     <h1 class="animated fadeIn"> Network Management </h1>
 </div>
+<div class="after-parallax container-fluid" >
+  <h3 class="text-info">Internet <small>(global settings)</small></h3>
+</div>
+<div class="after-parallax container-fluid" style="min-height: 100px;">
+  <div class="container"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <div class="btn-group">
+          <button  ng-disabled="global_routing_mark === undefined" class="btn btn-primary btn-lg" ng-repeat="val in routing_values" ng-class="{'active': global_routing_mark == val}" ng-click="change_routing_mark('global', val)">
+            <i class="fa fa-mobile" ng-if="val == 'LTE'"></i>
+            <i class="fa fa-globe" ng-if="val != 'LTE'"></i>
+            {{ val }}</button>
+        </div>
+        <i class="fa fa-spin fa-cog" ng-if="global_routing_mark === undefined"></i>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="after-parallax container-fluid" >
+  <h3 class="text-info">Subnets</h3>
+  <h4 class="text-center" ng-if="subnets_loading"><i class="fa fa-cog fa-spin"></i> Loading...</h4>
+</div>
+<div class="after-parallax container-fluid" style="min-height: 200px;">
+  <div class="container"></div>
+  <div class="container">
+    <div class="row" ng-repeat="subnet in subnets" ng-show='!subnet.hidden'>
+      <div class="col-md-4 text-right">
+        {{ subnet.alias }}
+      </div>
+      <div class="col-md-3">
+        <div class="btn-group">
+          <button  ng-disabled="routing_marks[subnet.subnet] === undefined" class="btn btn-primary" ng-repeat="val in routing_values" ng-class="{'active': routing_marks[subnet.subnet] == val}" ng-click="change_routing_mark(subnet.subnet, val)">
+            <i class="fa fa-mobile" ng-if="val == 'LTE'"></i>
+            <i class="fa fa-globe" ng-if="val != 'LTE'"></i>
+            {{ val }}</button>
+        </div>
+        <i class="fa fa-spin fa-cog" ng-if="routing_marks[subnet.subnet] === undefined"></i>
+      </div>
+    </div>
+
+  </div>
+</div>
 <div class="after-parallax container-fluid">
   <h3 class="text-info">Network Status</h3>
   <h4 class="text-center" ng-show="loading"><i class="fa fa-cog fa-spin"></i> Loading...</h4>
@@ -19,25 +63,5 @@
         <button class="btn btn-info" ng-click="refresh_gw(gw)"><i class="fa fa-refresh"></i></button>
       </div>
     </div>
-  </div>
-</div>
-<div class="after-parallax container-fluid">
-  <h3 class="text-info">Subnets</h3>
-  <h4 class="text-center" ng-if="subnets_loading"><i class="fa fa-cog fa-spin"></i> Loading...</h4>
-</div>
-<div class="container-fluid">
-  <div class="container">
-    <div class="row" ng-repeat="subnet in subnets" >
-      <div class="col-md-2 text-right">
-        {{ subnet }}
-      </div>
-      <div class="col-md-3">
-        <div class="btn-group">
-          <button  ng-disabled="routing_marks[subnet] === undefined" class="btn btn-primary" ng-repeat="val in routing_values" ng-class="{'active': routing_marks[subnet] == val}" ng-click="change_routing_mark(subnet, val)">{{ val }}</button>
-        </div>
-        <i class="fa fa-spin fa-cog" ng-if="routing_marks[subnet] === undefined"></i>
-      </div>
-    </div>
-
   </div>
 </div>

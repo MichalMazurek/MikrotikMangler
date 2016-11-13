@@ -1,2 +1,4 @@
 ./dworek.yaml
-./node_modules/
+node_modules/
+subnets.yaml
+config.yaml
